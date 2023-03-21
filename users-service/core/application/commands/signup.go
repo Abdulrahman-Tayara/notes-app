@@ -11,6 +11,7 @@ import (
 
 type SignUp struct {
 	Email    string
+	Name     string
 	Password string
 }
 
@@ -27,7 +28,7 @@ func NewSingUpHandler(unitOfWork interfaces2.IUnitOfWork, hashService services.I
 }
 
 func (h *SingUpHandler) Handle(ctx context.Context, command SignUp, outputPort ports.IOutputPort[*entity.User]) {
-	user, err := entity.NewUser(command.Email, command.Password)
+	user, err := entity.NewUser(command.Name, command.Email, command.Password)
 
 	if err != nil {
 		outputPort.HandleError(err)

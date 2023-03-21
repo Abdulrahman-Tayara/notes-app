@@ -1,6 +1,7 @@
 package api
 
 import (
+	gocontext "context"
 	"errors"
 	"fmt"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
@@ -13,7 +14,8 @@ import (
 type HTTPServer struct {
 	config initializers.Config
 
-	engine *gin.Engine
+	engine     *gin.Engine
+	httpServer *http.Server
 }
 
 func NewHTTPServer(config initializers.Config) *HTTPServer {
@@ -32,7 +34,16 @@ func (s *HTTPServer) Run() error {
 
 	s.setupRouters()
 
-	return s.engine.Run(fmt.Sprintf(":%s", s.config.Port))
+	s.httpServer = &http.Server{
+		Addr:    fmt.Sprintf(":%s", s.config.Port),
+		Handler: s.engine,
+	}
+
+	return s.httpServer.ListenAndServe()
+}
+
+func (s *HTTPServer) Close(ctx gocontext.Context) error {
+	return s.httpServer.Shutdown(ctx)
 }
 
 func (s *HTTPServer) setupRouters() {

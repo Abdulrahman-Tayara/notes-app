@@ -23,5 +23,5 @@ func InitHashService() services.IHashService {
 }
 
 func InitPostgresDBInstance() *gorm.DB {
-	return db.DBInstance()
+	return db.Instance()
 }

@@ -21,6 +21,6 @@ func ConnectToDB(dsn string) (err error) {
 	return
 }
 
-func DBInstance() *gorm.DB {
+func Instance() *gorm.DB {
 	return db
 }

@@ -4,25 +4,24 @@ import (
 	"errors"
 	"github.com/Abdulrahman-Tayara/notes-app/shared/core"
 	sharederrors "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/infrastructure"
 	"gorm.io/gorm"
 )
 
-type ReadRepository[TEntity core.Entity, TModel infrastructure.BaseModel[TEntity], TFilters any] struct {
+type ReadRepository[TEntity core.Entity, TFilters any] struct {
 	db *gorm.DB
 
 	filtersMapper func(TFilters) any
 }
 
-func NewPostgresReadRepository[TEntity core.Entity, TModel infrastructure.BaseModel[TEntity], TFilters any](db *gorm.DB, filtersMapper func(TFilters) any) *ReadRepository[TEntity, TModel, TFilters] {
-	return &ReadRepository[TEntity, TModel, TFilters]{
+func NewPostgresReadRepository[TEntity core.Entity, TFilters any](db *gorm.DB, filtersMapper func(TFilters) any) *ReadRepository[TEntity, TFilters] {
+	return &ReadRepository[TEntity, TFilters]{
 		db:            db,
 		filtersMapper: filtersMapper,
 	}
 }
 
-func (r ReadRepository[TEntity, TModel, TFilters]) GetById(id core.ID) (*TEntity, error) {
-	var model TModel
+func (r ReadRepository[TEntity, TFilters]) GetById(id core.ID) (*TEntity, error) {
+	var model TEntity
 
 	res := r.db.Where("id = ?", id.String()).First(&model)
 
@@ -30,15 +29,15 @@ func (r ReadRepository[TEntity, TModel, TFilters]) GetById(id core.ID) (*TEntity
 		return nil, normalizeGORMErrors(res.Error)
 	}
 
-	return model.To(), nil
+	return &model, nil
 }
 
-func (r ReadRepository[TEntity, TModel, TFilters]) GetAll(filters TFilters) (entities []TEntity, err error) {
+func (r ReadRepository[TEntity, TFilters]) GetAll(filters TFilters) (entities []TEntity, err error) {
 	filter := r.filtersMapper(filters)
 
-	var model TModel
+	var model TEntity
 
-	var models []TModel
+	var models []TEntity
 
 	res := r.db.Model(&model).Where(filter).Find(&models)
 
@@ -48,13 +47,13 @@ func (r ReadRepository[TEntity, TModel, TFilters]) GetAll(filters TFilters) (ent
 		return
 	}
 
-	entities = infrastructure.MapToEntities[TEntity, TModel](models)
+	entities = models
 
 	return
 }
 
-func (r ReadRepository[TEntity, TModel, TFilters]) Count(filters TFilters) int32 {
-	var model TModel
+func (r ReadRepository[TEntity, TFilters]) Count(filters TFilters) int32 {
+	var model TEntity
 
 	filter := r.filtersMapper(filters)
 
@@ -65,23 +64,18 @@ func (r ReadRepository[TEntity, TModel, TFilters]) Count(filters TFilters) int32
 	return int32(count)
 }
 
-type WriteRepository[TEntity core.Entity, TModel infrastructure.BaseModel[TEntity]] struct {
-	modelFactory func(*TEntity) *TModel
-	db           *gorm.DB
+type WriteRepository[TEntity core.Entity] struct {
+	db *gorm.DB
 }
 
-func NewPostgresWriteRepository[TEntity core.Entity, TModel infrastructure.BaseModel[TEntity]](
-	db *gorm.DB, modelFactory func(*TEntity) *TModel) *WriteRepository[TEntity, TModel] {
-	return &WriteRepository[TEntity, TModel]{
-		modelFactory: modelFactory,
-		db:           db,
+func NewPostgresWriteRepository[TEntity core.Entity](db *gorm.DB) *WriteRepository[TEntity] {
+	return &WriteRepository[TEntity]{
+		db: db,
 	}
 }
 
-func (w WriteRepository[TEntity, TModel]) Save(entity *TEntity) (*TEntity, error) {
-	var model = w.modelFactory(entity)
-
-	res := w.db.Save(&model)
+func (w WriteRepository[TEntity]) Save(entity *TEntity) (*TEntity, error) {
+	res := w.db.Save(&entity)
 
 	if res.Error != nil {
 		return nil, normalizeGORMErrors(res.Error)
@@ -90,18 +84,16 @@ func (w WriteRepository[TEntity, TModel]) Save(entity *TEntity) (*TEntity, error
 	return entity, nil
 }
 
-func (w WriteRepository[TEntity, TModel]) Delete(entity *TEntity) (err error) {
-	var model = w.modelFactory(entity)
-
-	res := w.db.Delete(&model)
+func (w WriteRepository[TEntity]) Delete(entity *TEntity) (err error) {
+	res := w.db.Delete(&entity)
 
 	err = normalizeGORMErrors(res.Error)
 
 	return
 }
 
-func (w WriteRepository[TEntity, TModel]) DeleteById(id core.ID) (err error) {
-	var model TModel
+func (w WriteRepository[TEntity]) DeleteById(id core.ID) (err error) {
+	var model TEntity
 
 	res := w.db.Where("id = ?", id.String()).Delete(&model)
 
@@ -110,10 +102,8 @@ func (w WriteRepository[TEntity, TModel]) DeleteById(id core.ID) (err error) {
 	return
 }
 
-func (w WriteRepository[TEntity, TModel]) Update(entity *TEntity) (err error) {
-	var model = w.modelFactory(entity)
-
-	res := w.db.Save(model)
+func (w WriteRepository[TEntity]) Update(entity *TEntity) (err error) {
+	res := w.db.Save(entity)
 
 	err = normalizeGORMErrors(res.Error)
 

@@ -21,9 +21,9 @@ func TestSingUpHandler_Handle(t *testing.T) {
 		mockFunc    func(*interfaces.IUnitOfWork, *interfaces.IRepositoriesConstructor, *interfaces.IUserReadRepository, *interfaces.IUserWriteRepository, *services.IHashService)
 	}{
 		"Success": {
-			inputs:      SignUp{Email: "abdulrahman@gmail.com", Password: "12345"},
+			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "12345"},
 			outputError: nil,
-			outputUser:  &entity.User{Email: "abdulrahman@gmail.com", Password: "12345"},
+			outputUser:  &entity.User{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "12345"},
 			mockFunc: func(unitOfWorkMock *interfaces.IUnitOfWork, storeMock *interfaces.IRepositoriesConstructor, userReadRepoMock *interfaces.IUserReadRepository, usersWriteRepoMock *interfaces.IUserWriteRepository, hashService *services.IHashService) {
 				hashService.On("HashString", "12345").Return("hashedPassword")
 				storeMock.On("UsersRead").Return(userReadRepoMock)
@@ -35,14 +35,14 @@ func TestSingUpHandler_Handle(t *testing.T) {
 
 				userReadRepoMock.On("Count", interfaces2.UsersFilter{Email: "abdulrahman@gmail.com"}).Return(int32(0))
 
-				userToSave := &entity.User{Email: "abdulrahman@gmail.com", Password: "hashedPassword"}
+				userToSave := &entity.User{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "hashedPassword"}
 
 				usersWriteRepoMock.On("Save", userToSave).Return(userToSave, nil)
 			},
 		},
 
 		"InValid Email": {
-			inputs:      SignUp{Email: "abdulrahman", Password: "12345"},
+			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman", Password: "12345"},
 			outputError: errors.BadValueException("email"),
 			mockFunc: func(unitOfWorkMock *interfaces.IUnitOfWork, storeMock *interfaces.IRepositoriesConstructor, userReadRepoMock *interfaces.IUserReadRepository, usersWriteRepoMock *interfaces.IUserWriteRepository, hashService *services.IHashService) {
 
@@ -50,7 +50,7 @@ func TestSingUpHandler_Handle(t *testing.T) {
 		},
 
 		"Email Already Exists": {
-			inputs:      SignUp{Email: "abdulrahman@gmail.com", Password: "12345"},
+			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "12345"},
 			outputError: domain.EmailAlreadyExists,
 			mockFunc: func(unitOfWorkMock *interfaces.IUnitOfWork, storeMock *interfaces.IRepositoriesConstructor, userReadRepoMock *interfaces.IUserReadRepository, usersWriteRepoMock *interfaces.IUserWriteRepository, hashService *services.IHashService) {
 				hashService.On("HashString", "12345").Return("hashedPassword")
@@ -79,7 +79,7 @@ func TestSingUpHandler_Handle(t *testing.T) {
 
 			test.mockFunc(unitOfWorkMock, storeMock, usersReadRepoMock, usersWriteRepoMock, hashService)
 
-			handler.Handle(context.TODO(), SignUp{Email: test.inputs.Email, Password: test.inputs.Password}, output)
+			handler.Handle(context.TODO(), SignUp{Name: test.inputs.Name, Email: test.inputs.Email, Password: test.inputs.Password}, output)
 
 			if !reflect.DeepEqual(output.Err, test.outputError) {
 				t.Errorf("expceted err: %v, actual err: %v", test.outputError, output.Err)

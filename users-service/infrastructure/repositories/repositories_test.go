@@ -1,4 +1,4 @@
-package infrastructure
+package repositories
 
 import (
 	"errors"
@@ -14,7 +14,7 @@ import (
 func init() {
 	log.Println("init")
 
-	config, err := initializers.LoadTestConfig("../")
+	config, err := initializers.LoadTestConfig("../../")
 
 	if err != nil {
 		log.Fatal(err)
@@ -28,9 +28,9 @@ func init() {
 }
 
 func TestUserRepository_Save(t *testing.T) {
-	repo := NewUserRepository(db.DBInstance())
+	repo := NewUserRepository(db.Instance())
 
-	user, _ := entity.NewUser("abdulrahman@gmail.com", "a1234456")
+	user, _ := entity.NewUser("", "abdulrahman@gmail.com", "a1234456")
 
 	savedUser, err := repo.Save(user)
 
@@ -50,9 +50,9 @@ func TestUserRepository_Save(t *testing.T) {
 }
 
 func TestUserRepository_DeleteById(t *testing.T) {
-	repo := NewUserRepository(db.DBInstance())
+	repo := NewUserRepository(db.Instance())
 
-	user, _ := entity.NewUser("fordelete@gmail.com", "a1234456")
+	user, _ := entity.NewUser("", "fordelete@gmail.com", "a1234456")
 
 	savedUser, err := repo.Save(user)
 
@@ -74,7 +74,7 @@ func TestUserRepository_DeleteById(t *testing.T) {
 }
 
 func TestUserRepository_Count(t *testing.T) {
-	repo := NewUserRepository(db.DBInstance())
+	repo := NewUserRepository(db.Instance())
 
 	email := "fordelete@gmail.com"
 
@@ -85,7 +85,7 @@ func TestUserRepository_Count(t *testing.T) {
 		return
 	}
 
-	user, _ := entity.NewUser(email, "a1234456")
+	user, _ := entity.NewUser("", email, "a1234456")
 
 	savedUser, err := repo.Save(user)
 

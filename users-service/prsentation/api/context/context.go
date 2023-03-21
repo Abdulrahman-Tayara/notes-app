@@ -11,6 +11,9 @@ type Context struct {
 }
 
 func (c *Context) Response(r presenters.Response) {
+	if r.Err != nil {
+		_ = c.Error(r.Err)
+	}
 	c.JSON(r.Code, r.Body)
 }
 

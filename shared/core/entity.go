@@ -2,30 +2,24 @@ package core
 
 import "github.com/google/uuid"
 
-type ID uuid.UUID
+type ID string
 
 func NewID() ID {
-	return ID(uuid.New())
+	return ID(uuid.New().String())
 }
 
 func (i ID) String() string {
-	return uuid.UUID(i).String()
+	return string(i)
 }
 
 func ParseSafely(s string) (ID, error) {
 	id, err := uuid.Parse(s)
 
 	if err != nil {
-		return ID{}, err
+		return "", err
 	}
 
-	return ID(id), nil
-}
-
-func Parse(s string) ID {
-	id, _ := ParseSafely(s)
-
-	return id
+	return ID(id.String()), nil
 }
 
 type Entity interface {

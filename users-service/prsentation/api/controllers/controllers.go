@@ -9,6 +9,7 @@ import (
 
 type SignUpRequest struct {
 	Email    string `json:"email" binding:"required,email"`
+	Name     string `json:"name" binding:"required"`
 	Password string `json:"password" binding:"required,min=6"`
 }
 
@@ -21,6 +22,7 @@ func SignUpController(ctx *context.Context) {
 
 	command := commands.SignUp{
 		Email:    request.Email,
+		Name:     request.Name,
 		Password: request.Password,
 	}
 

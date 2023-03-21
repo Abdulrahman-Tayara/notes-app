@@ -2,7 +2,8 @@ POST {{api_url}}/signup
 Content-Type: {{content_type}}
 
 {
-  "email": "abdulrahman@gmail.com",
+  "name": "Abdulrahman",
+  "email": "abdulrahman22@gmail.com",
   "password": "123456"
 }
 

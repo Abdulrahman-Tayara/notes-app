@@ -1,4 +1,4 @@
-package infrastructure
+package repositories
 
 import (
 	"fmt"
@@ -9,14 +9,14 @@ import (
 )
 
 type UserRepository struct {
-	*postgres.ReadRepository[entity.User, User, interfaces.UsersFilter]
-	*postgres.WriteRepository[entity.User, User]
+	*postgres.ReadRepository[entity.User, interfaces.UsersFilter]
+	*postgres.WriteRepository[entity.User]
 }
 
 func NewUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{
-		ReadRepository:  postgres.NewPostgresReadRepository[entity.User, User, interfaces.UsersFilter](db, filtersAsMap),
-		WriteRepository: postgres.NewPostgresWriteRepository[entity.User, User](db, From),
+		ReadRepository:  postgres.NewPostgresReadRepository[entity.User, interfaces.UsersFilter](db, filtersAsMap),
+		WriteRepository: postgres.NewPostgresWriteRepository[entity.User](db),
 	}
 }
 

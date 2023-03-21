@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/shared/infrastructure/postgres"
 	interfaces2 "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/repositories"
 	"gorm.io/gorm"
 )
 
@@ -11,11 +12,11 @@ type RepositoriesConstructor struct {
 }
 
 func (r RepositoriesConstructor) UsersRead() interfaces2.IUserReadRepository {
-	return NewUserRepository(r.db)
+	return repositories.NewUserRepository(r.db)
 }
 
 func (r RepositoriesConstructor) UsersWrite() interfaces2.IUserWriteRepository {
-	return NewUserRepository(r.db)
+	return repositories.NewUserRepository(r.db)
 }
 
 type storeFactory struct {

@@ -8,13 +8,14 @@ import (
 )
 
 type User struct {
-	Id        core.ID
+	Id        core.ID      `gorm:"type:uuid;primary_key;" json:"id"`
+	Name      string       `json:"name"`
 	Email     domain.Email `json:"email"`
 	Password  string       `json:"password"`
 	CreatedAt time.Time    `json:"created_at"`
 }
 
-func NewUser(email string, password string) (*User, error) {
+func NewUser(name string, email string, password string) (*User, error) {
 	emailObject, err := domain.NewEmail(email)
 
 	if err != nil {
@@ -23,6 +24,7 @@ func NewUser(email string, password string) (*User, error) {
 
 	user := User{
 		Id:        core.NewID(),
+		Name:      name,
 		Email:     *emailObject,
 		Password:  password,
 		CreatedAt: time.Now(),

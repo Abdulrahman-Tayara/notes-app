@@ -9,12 +9,14 @@ import (
 type Response struct {
 	Code int
 	Body map[string]any
+	Err  error
 }
 
 func NewErrorResponse(err error, code int) Response {
 	r := Response{
 		Code: code,
 		Body: map[string]any{},
+		Err:  err,
 	}
 	r.Body["error"] = err.Error()
 	return r
