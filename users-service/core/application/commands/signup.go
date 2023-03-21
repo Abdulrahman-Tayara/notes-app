@@ -49,15 +49,23 @@ func (h *SingUpHandler) Handle(ctx context.Context, command SignUp, outputPort p
 		return
 	}
 
+	defer func() {
+		if err := recover(); err != nil {
+			if e, ok := err.(error); ok {
+				_ = h.unitOfWork.Rollback()
+				outputPort.HandleError(e)
+			}
+		}
+	}()
+
 	usersWriteRepo := h.unitOfWork.Store().UsersWrite()
 
 	if _, err = usersWriteRepo.Save(user); err != nil {
-		outputPort.HandleError(err)
-		return
+		panic(err)
 	}
 
 	if err = h.unitOfWork.Commit(); err != nil {
-		outputPort.HandleError(err)
+		panic(err)
 	}
 
 	outputPort.HandleResult(user)
