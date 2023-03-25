@@ -6,6 +6,8 @@ type (
 	IReadRepository[TEntity core.Entity, TFilters any] interface {
 		GetById(id core.ID) (*TEntity, error)
 
+		GetOne(filter *TEntity) (*TEntity, error)
+
 		GetAll(filters TFilters) ([]TEntity, error)
 
 		Count(filters TFilters) int32

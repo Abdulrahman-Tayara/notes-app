@@ -1,6 +1,8 @@
 package presenters
 
 import (
+	"encoding/json"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/viewmodels"
 	"net/http"
@@ -33,19 +35,47 @@ func NewSuccessResponse(data any) Response {
 
 // ---------
 
-type SignUpPresenter struct {
+type BasePresenter[TResult any] struct {
 	response Response
 }
 
-func NewSingUpPresenter() *SignUpPresenter {
-	return &SignUpPresenter{}
+func (p *BasePresenter[TResult]) HandleError(err error) {
+	p.response = NewErrorResponse(err, http.StatusBadRequest)
 }
-func (s *SignUpPresenter) HandleError(err error) {
-	s.response = NewErrorResponse(err, http.StatusBadRequest)
+func (p *BasePresenter[TResult]) HandleResult(result TResult) {
+	bytes, _ := json.Marshal(result)
+	var res map[string]any
+	_ = json.Unmarshal(bytes, &res)
+	p.response = NewSuccessResponse(res)
+}
+func (p *BasePresenter[TResult]) Present() Response {
+	return p.response
+}
+
+// ---------
+
+type SignUpPresenter struct {
+	BasePresenter[*entity.User]
+}
+
+func NewSingUpPresenter() *SignUpPresenter {
+	return &SignUpPresenter{
+		BasePresenter: BasePresenter[*entity.User]{},
+	}
 }
 func (s *SignUpPresenter) HandleResult(result *entity.User) {
 	s.response = NewSuccessResponse(viewmodels.UserToViewModel(result))
 }
-func (s *SignUpPresenter) Present() Response {
-	return s.response
+
+// ---------
+
+type LoginPresenter struct {
+	BasePresenter[*commands.LoginResult]
+	response Response
+}
+
+func NewLoginPresenter() *LoginPresenter {
+	return &LoginPresenter{
+		BasePresenter: BasePresenter[*commands.LoginResult]{},
+	}
 }

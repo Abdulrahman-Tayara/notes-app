@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api"
 	"log"
@@ -12,7 +13,7 @@ import (
 	"time"
 )
 
-func loadConfig() (initializers.Config, error) {
+func loadConfig() (configs.Config, error) {
 	return initializers.LoadConfig(".", "app")
 }
 
@@ -32,6 +33,7 @@ func init() {
 
 func main() {
 	config, _ := loadConfig()
+	configs.AppConfig = &config
 
 	server := api.NewHTTPServer(config)
 

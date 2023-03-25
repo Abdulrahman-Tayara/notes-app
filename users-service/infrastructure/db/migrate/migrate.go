@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
@@ -23,7 +24,7 @@ func init() {
 }
 
 func main() {
-	err := db.Instance().AutoMigrate(&entity.User{})
+	err := db.Instance().AutoMigrate(&entity.User{}, &types.RefreshToken{})
 
 	if err != nil {
 		log.Fatal("[error]: ", err)

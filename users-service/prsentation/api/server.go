@@ -4,7 +4,7 @@ import (
 	gocontext "context"
 	"errors"
 	"fmt"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/context"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/controllers"
 	"github.com/gin-gonic/gin"
@@ -12,13 +12,13 @@ import (
 )
 
 type HTTPServer struct {
-	config initializers.Config
+	config configs.Config
 
 	engine     *gin.Engine
 	httpServer *http.Server
 }
 
-func NewHTTPServer(config initializers.Config) *HTTPServer {
+func NewHTTPServer(config configs.Config) *HTTPServer {
 	return &HTTPServer{
 		config: config,
 	}
@@ -56,4 +56,5 @@ func (s *HTTPServer) setupRouters() {
 	})
 
 	apiGroup.POST("/signup", context.GinWrapper(controllers.SignUpController))
+	apiGroup.POST("/login", context.GinWrapper(controllers.LoginController))
 }

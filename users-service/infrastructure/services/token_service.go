@@ -13,9 +13,8 @@ type JWTService struct {
 }
 
 type Config struct {
-	SigningKey       string
-	ExpirationPeriod time.Duration
-	Issuer           string
+	SigningKey string
+	Issuer     string
 }
 
 func NewJWTService(c Config) *JWTService {
@@ -24,16 +23,19 @@ func NewJWTService(c Config) *JWTService {
 	}
 }
 
-func (j *JWTService) Generate(payload services.Payload) (services.Token, error) {
-	if payload == nil {
+func (j *JWTService) Generate(input *services.GenerateInput) (services.Token, error) {
+	if input == nil {
+		return "", errors.New("input is required")
+	}
+	if input.Payload == nil {
 		return "", errors.New("invalid payload")
 	}
 
 	claims := jwt.MapClaims{
-		"exp":     jwt.NewNumericDate(time.Now().Add(j.config.ExpirationPeriod)),
+		"exp":     jwt.NewNumericDate(input.ExpiresIn),
 		"iat":     time.Now(),
 		"iss":     j.config.Issuer,
-		"payload": payload,
+		"payload": input.Payload,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

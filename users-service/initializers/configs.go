@@ -1,14 +1,11 @@
 package initializers
 
-import "github.com/spf13/viper"
+import (
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
+	"github.com/spf13/viper"
+)
 
-type Config struct {
-	DbDSN   string `mapstructure:"DB_DSN"`
-	Port    string `mapstructure:"PORT"`
-	GinMode string `mapstructure:"GIN_MODE"`
-}
-
-func LoadConfig(path string, filename string) (config Config, err error) {
+func LoadConfig(path string, filename string) (config configs.Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName(filename)
 	viper.SetConfigType("env")
@@ -23,6 +20,6 @@ func LoadConfig(path string, filename string) (config Config, err error) {
 	return
 }
 
-func LoadTestConfig(path string) (config Config, err error) {
+func LoadTestConfig(path string) (config configs.Config, err error) {
 	return LoadConfig(path, "app")
 }

@@ -10,11 +10,14 @@ import (
 
 func TestJWTService_Generate(t *testing.T) {
 	tests := map[string]struct {
-		input     services.Payload
+		input     *services.GenerateInput
 		returnErr bool
 	}{
 		"Filled payload": {
-			input:     map[string]any{},
+			input: &services.GenerateInput{
+				Payload:   map[string]any{},
+				ExpiresIn: time.Now().Add(time.Hour),
+			},
 			returnErr: false,
 		},
 		"Nil payload": {
@@ -26,9 +29,8 @@ func TestJWTService_Generate(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			svc := NewJWTService(Config{
-				SigningKey:       "MY_TEST_KEY",
-				ExpirationPeriod: time.Hour,
-				Issuer:           "unit_test",
+				SigningKey: "MY_TEST_KEY",
+				Issuer:     "unit_test",
 			})
 
 			_, err := svc.Generate(test.input)
@@ -48,7 +50,10 @@ func TestJWTService_Parse(t *testing.T) {
 	}{
 		"Valid token": {
 			tokenGenerator: func(svc *JWTService) services.Token {
-				token, _ := svc.Generate(services.Payload{"key1": "value1", "key2": true})
+				token, _ := svc.Generate(&services.GenerateInput{
+					Payload:   services.Payload{"key1": "value1", "key2": true},
+					ExpiresIn: time.Now().Add(time.Hour),
+				})
 
 				return token
 			}, outputPayload: services.Payload{"key1": "value1", "key2": true}, outputErr: nil,
@@ -63,9 +68,8 @@ func TestJWTService_Parse(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			svc := NewJWTService(Config{
-				SigningKey:       "MY_TEST_KEY",
-				ExpirationPeriod: time.Hour,
-				Issuer:           "unit_test",
+				SigningKey: "MY_TEST_KEY",
+				Issuer:     "unit_test",
 			})
 
 			payload, err := svc.Parse(test.tokenGenerator(svc))

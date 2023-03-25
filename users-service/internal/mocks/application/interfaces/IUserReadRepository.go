@@ -4,8 +4,9 @@ package interfaces
 
 import (
 	core "github.com/Abdulrahman-Tayara/notes-app/shared/core"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
+	interfaces "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
+	entity "github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
+
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -67,6 +68,29 @@ func (_m *IUserReadRepository) GetById(id core.ID) (*entity.User, error) {
 	var r1 error
 	if rf, ok := ret.Get(1).(func(core.ID) error); ok {
 		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetOne provides a mock function with given fields: filter
+func (_m *IUserReadRepository) GetOne(filter *entity.User) (*entity.User, error) {
+	ret := _m.Called(filter)
+
+	var r0 *entity.User
+	if rf, ok := ret.Get(0).(func(*entity.User) *entity.User); ok {
+		r0 = rf(filter)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*entity.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*entity.User) error); ok {
+		r1 = rf(filter)
 	} else {
 		r1 = ret.Error(1)
 	}

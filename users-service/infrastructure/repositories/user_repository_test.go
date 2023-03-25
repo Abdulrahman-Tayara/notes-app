@@ -4,9 +4,11 @@ import (
 	"errors"
 	sharederrors "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
+	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
 )
@@ -76,7 +78,7 @@ func TestUserRepository_DeleteById(t *testing.T) {
 func TestUserRepository_Count(t *testing.T) {
 	repo := NewUserRepository(db.Instance())
 
-	email := "fordelete@gmail.com"
+	email := "fordelete2@gmail.com"
 
 	count := repo.Count(interfaces.UsersFilter{Email: email})
 
@@ -101,4 +103,29 @@ func TestUserRepository_Count(t *testing.T) {
 	}
 
 	_ = repo.DeleteById(savedUser.Id)
+}
+
+func TestUserRepository_GetOne(t *testing.T) {
+	repo := NewUserRepository(db.Instance())
+
+	email, password := "fordelete@gmail.com", "1234567"
+	user, _ := entity.NewUser("test", email, password)
+
+	_, err := repo.Save(user)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	defer repo.Delete(user)
+
+	user, err = repo.GetOne(&entity.User{Email: domain.Email(email), Password: password})
+
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	assert.Equal(t, email, string(user.Email))
+	assert.Equal(t, password, user.Password)
 }

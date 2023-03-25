@@ -1,4 +1,15 @@
+### Signup
 POST {{api_url}}/signup
+Content-Type: {{content_type}}
+
+{
+  "name": "Abdulrahman",
+  "email": "abdulrahman2222@gmail.com",
+  "password": "123456"
+}
+
+### Login
+POST {{api_url}}/login
 Content-Type: {{content_type}}
 
 {

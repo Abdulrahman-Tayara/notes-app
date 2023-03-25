@@ -32,6 +32,17 @@ func (r ReadRepository[TEntity, TFilters]) GetById(id core.ID) (*TEntity, error)
 	return &model, nil
 }
 
+func (r ReadRepository[TEntity, TFilters]) GetOne(filter *TEntity) (*TEntity, error) {
+	var model TEntity
+	res := r.db.Where(filter).First(&model)
+
+	if res.Error != nil {
+		return nil, normalizeGORMErrors(res.Error)
+	}
+
+	return &model, nil
+}
+
 func (r ReadRepository[TEntity, TFilters]) GetAll(filters TFilters) (entities []TEntity, err error) {
 	filter := r.filtersMapper(filters)
 

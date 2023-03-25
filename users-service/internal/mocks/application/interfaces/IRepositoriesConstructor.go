@@ -3,7 +3,7 @@
 package interfaces
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
+	interfaces "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	mock "github.com/stretchr/testify/mock"
 )
 
