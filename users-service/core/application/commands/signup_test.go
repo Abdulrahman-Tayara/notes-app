@@ -8,7 +8,7 @@ import (
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/internal/mocks/application/interfaces"
+	interfaces3 "github.com/Abdulrahman-Tayara/notes-app/users-service/mocks/application/interfaces"
 	"github.com/stretchr/testify/mock"
 	"reflect"
 	"testing"
@@ -19,13 +19,13 @@ func TestSingUpHandler_Handle(t *testing.T) {
 		inputs      SignUp
 		outputError error
 		outputUser  *entity.User
-		mockFunc    func(*testing.T, *interfaces.IUnitOfWork, *interfaces.IRepositoriesConstructor, *interfaces.IUserReadRepository, *interfaces.IUserWriteRepository, *interfaces.IHashService)
+		mockFunc    func(*testing.T, *interfaces3.IUnitOfWork, *interfaces3.IRepositoriesConstructor, *interfaces3.IUserReadRepository, *interfaces3.IUserWriteRepository, *interfaces3.IHashService)
 	}{
 		"Success": {
 			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "12345"},
 			outputError: nil,
 			outputUser:  &entity.User{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "hashedPassword"},
-			mockFunc: func(test *testing.T, unitOfWorkMock *interfaces.IUnitOfWork, storeMock *interfaces.IRepositoriesConstructor, userReadRepoMock *interfaces.IUserReadRepository, usersWriteRepoMock *interfaces.IUserWriteRepository, hashService *interfaces.IHashService) {
+			mockFunc: func(test *testing.T, unitOfWorkMock *interfaces3.IUnitOfWork, storeMock *interfaces3.IRepositoriesConstructor, userReadRepoMock *interfaces3.IUserReadRepository, usersWriteRepoMock *interfaces3.IUserWriteRepository, hashService *interfaces3.IHashService) {
 				hashService.On("HashString", "12345").Return("hashedPassword")
 				storeMock.On("UsersRead").Return(userReadRepoMock)
 				storeMock.On("UsersWrite").Return(usersWriteRepoMock)
@@ -46,7 +46,7 @@ func TestSingUpHandler_Handle(t *testing.T) {
 			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "12345"},
 			outputError: goerrors.New("some commit error"),
 			outputUser:  nil,
-			mockFunc: func(test *testing.T, work *interfaces.IUnitOfWork, constructor *interfaces.IRepositoriesConstructor, readRepository *interfaces.IUserReadRepository, writeRepository *interfaces.IUserWriteRepository, service *interfaces.IHashService) {
+			mockFunc: func(test *testing.T, work *interfaces3.IUnitOfWork, constructor *interfaces3.IRepositoriesConstructor, readRepository *interfaces3.IUserReadRepository, writeRepository *interfaces3.IUserWriteRepository, service *interfaces3.IHashService) {
 				service.On("HashString", "12345").Return("hashedPassword")
 				constructor.On("UsersRead").Return(readRepository)
 				constructor.On("UsersWrite").Return(writeRepository)
@@ -63,7 +63,7 @@ func TestSingUpHandler_Handle(t *testing.T) {
 		"InValid Email": {
 			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman", Password: "12345"},
 			outputError: errors.BadValueException("email"),
-			mockFunc: func(test *testing.T, unitOfWorkMock *interfaces.IUnitOfWork, storeMock *interfaces.IRepositoriesConstructor, userReadRepoMock *interfaces.IUserReadRepository, usersWriteRepoMock *interfaces.IUserWriteRepository, hashService *interfaces.IHashService) {
+			mockFunc: func(test *testing.T, unitOfWorkMock *interfaces3.IUnitOfWork, storeMock *interfaces3.IRepositoriesConstructor, userReadRepoMock *interfaces3.IUserReadRepository, usersWriteRepoMock *interfaces3.IUserWriteRepository, hashService *interfaces3.IHashService) {
 
 			},
 		},
@@ -71,7 +71,7 @@ func TestSingUpHandler_Handle(t *testing.T) {
 		"Email Already Exists": {
 			inputs:      SignUp{Name: "Abdulrahman", Email: "abdulrahman@gmail.com", Password: "12345"},
 			outputError: domain.EmailAlreadyExists,
-			mockFunc: func(test *testing.T, unitOfWorkMock *interfaces.IUnitOfWork, storeMock *interfaces.IRepositoriesConstructor, userReadRepoMock *interfaces.IUserReadRepository, usersWriteRepoMock *interfaces.IUserWriteRepository, hashService *interfaces.IHashService) {
+			mockFunc: func(test *testing.T, unitOfWorkMock *interfaces3.IUnitOfWork, storeMock *interfaces3.IRepositoriesConstructor, userReadRepoMock *interfaces3.IUserReadRepository, usersWriteRepoMock *interfaces3.IUserWriteRepository, hashService *interfaces3.IHashService) {
 				hashService.On("HashString", "12345").Return("hashedPassword")
 				storeMock.On("UsersRead").Return(userReadRepoMock)
 
@@ -84,12 +84,12 @@ func TestSingUpHandler_Handle(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			usersReadRepoMock := interfaces.NewIUserReadRepository(t)
-			usersWriteRepoMock := interfaces.NewIUserWriteRepository(t)
-			storeMock := interfaces.NewIRepositoriesConstructor(t)
-			unitOfWorkMock := interfaces.NewIUnitOfWork(t)
+			usersReadRepoMock := interfaces3.NewIUserReadRepository(t)
+			usersWriteRepoMock := interfaces3.NewIUserWriteRepository(t)
+			storeMock := interfaces3.NewIRepositoriesConstructor(t)
+			unitOfWorkMock := interfaces3.NewIUnitOfWork(t)
 
-			hashService := interfaces.NewIHashService(t)
+			hashService := interfaces3.NewIHashService(t)
 
 			output := &ports.MockOutputPort[*entity.User]{}
 

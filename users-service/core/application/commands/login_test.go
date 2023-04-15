@@ -9,7 +9,7 @@ import (
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/internal/mocks/application/interfaces"
+	interfaces3 "github.com/Abdulrahman-Tayara/notes-app/users-service/mocks/application/interfaces"
 	"github.com/stretchr/testify/mock"
 	"reflect"
 	"testing"
@@ -22,14 +22,14 @@ func TestLoginHandler_Handle(t *testing.T) {
 		err    error
 		result *LoginResult
 
-		mockFunc func(hashService *interfaces.IHashService, tokenService *interfaces.ITokenService,
-			userRepository *interfaces.IUserReadRepository, refreshTokenRepo *interfaces.IRefreshTokenRepository)
+		mockFunc func(hashService *interfaces3.IHashService, tokenService *interfaces3.ITokenService,
+			userRepository *interfaces3.IUserReadRepository, refreshTokenRepo *interfaces3.IRefreshTokenRepository)
 	}{
 		"Invalid creds": {
 			input:  Login{Email: "test@email.com", Password: "12345"},
 			err:    domain.InvalidCredentialsException,
 			result: nil,
-			mockFunc: func(hashService *interfaces.IHashService, tokenService *interfaces.ITokenService, userRepository *interfaces.IUserReadRepository, refreshTokenRepo *interfaces.IRefreshTokenRepository) {
+			mockFunc: func(hashService *interfaces3.IHashService, tokenService *interfaces3.ITokenService, userRepository *interfaces3.IUserReadRepository, refreshTokenRepo *interfaces3.IRefreshTokenRepository) {
 				filter := &entity.User{Email: domain.Email("test@email.com"), Password: "hashedString"}
 				hashService.On("HashString", mock.Anything).Return("hashedString")
 				userRepository.On("GetOne", filter).
@@ -40,7 +40,7 @@ func TestLoginHandler_Handle(t *testing.T) {
 			input:  Login{Email: "test@email.com", Password: "12345"},
 			err:    nil,
 			result: &LoginResult{AccessToken: "access", RefreshToken: "refresh"},
-			mockFunc: func(hashService *interfaces.IHashService, tokenService *interfaces.ITokenService, userRepository *interfaces.IUserReadRepository, refreshTokenRepo *interfaces.IRefreshTokenRepository) {
+			mockFunc: func(hashService *interfaces3.IHashService, tokenService *interfaces3.ITokenService, userRepository *interfaces3.IUserReadRepository, refreshTokenRepo *interfaces3.IRefreshTokenRepository) {
 				user := entity.User{
 					Id:       "user-id",
 					Email:    "test@email.com",
@@ -61,7 +61,7 @@ func TestLoginHandler_Handle(t *testing.T) {
 			input:  Login{Email: "test@email.com", Password: "12345"},
 			err:    errors.New("some db error"),
 			result: nil,
-			mockFunc: func(hashService *interfaces.IHashService, tokenService *interfaces.ITokenService, userRepository *interfaces.IUserReadRepository, refreshTokenRepo *interfaces.IRefreshTokenRepository) {
+			mockFunc: func(hashService *interfaces3.IHashService, tokenService *interfaces3.ITokenService, userRepository *interfaces3.IUserReadRepository, refreshTokenRepo *interfaces3.IRefreshTokenRepository) {
 				user := entity.User{
 					Id:       "user-id",
 					Email:    "test@email.com",
@@ -85,10 +85,10 @@ func TestLoginHandler_Handle(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			hashService := interfaces.NewIHashService(t)
-			tokenService := interfaces.NewITokenService(t)
-			refreshTokenRepo := interfaces.NewIRefreshTokenRepository(t)
-			userRepo := interfaces.NewIUserReadRepository(t)
+			hashService := interfaces3.NewIHashService(t)
+			tokenService := interfaces3.NewITokenService(t)
+			refreshTokenRepo := interfaces3.NewIRefreshTokenRepository(t)
+			userRepo := interfaces3.NewIUserReadRepository(t)
 
 			handler := NewLoginHandler(options, userRepo, refreshTokenRepo, tokenService, hashService)
 
