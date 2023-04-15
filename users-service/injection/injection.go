@@ -20,15 +20,28 @@ func InitSignUpCommand() *commands.SingUpHandler {
 
 func InitLoginCommand() *commands.LoginHandler {
 	return commands.NewLoginHandler(
-		types.AuthOptions{
-			AccessTokenAge:  time.Minute * time.Duration(configs.AppConfig.JWTAccessTokenAgeMinutes),
-			RefreshTokenAge: time.Minute * time.Duration(configs.AppConfig.JWTRefreshTokenAgeMinutes),
-		},
+		InitAuthOptions(),
 		InitUserReadRepository(),
 		InitRefreshTokenRepository(),
 		InitTokenService(),
 		InitHashService(),
 	)
+}
+
+func InitRefreshAccessTokenCommand() *commands.RefreshAccessTokenHandler {
+	return commands.NewRefreshAccessTokenHandler(
+		InitAuthOptions(),
+		InitUserReadRepository(),
+		InitRefreshTokenRepository(),
+		InitTokenService(),
+	)
+}
+
+func InitAuthOptions() types.AuthOptions {
+	return types.AuthOptions{
+		AccessTokenAge:  time.Minute * time.Duration(configs.AppConfig.JWTAccessTokenAgeMinutes),
+		RefreshTokenAge: time.Minute * time.Duration(configs.AppConfig.JWTRefreshTokenAgeMinutes),
+	}
 }
 
 func InitUserReadRepository() interfaces.IUserReadRepository {

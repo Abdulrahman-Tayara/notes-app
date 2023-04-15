@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/Abdulrahman-Tayara/notes-app/shared/core"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
 	"time"
 )
@@ -18,12 +19,12 @@ func (c UserClaimsPayload) AsPayload() services.Payload {
 }
 
 type RefreshToken struct {
-	Token     string `gorm:"primaryKey;autoIncrement:false"`
-	UserId    string `gorm:"primaryKey;autoIncrement:false"`
+	Token     string  `gorm:"primaryKey;autoIncrement:false"`
+	UserId    core.ID `gorm:"primaryKey;autoIncrement:false"`
 	ExpiresIn time.Time
 }
 
-func NewRefreshToken(token string, userId string, expiresIn time.Time) *RefreshToken {
+func NewRefreshToken(token string, userId core.ID, expiresIn time.Time) *RefreshToken {
 	return &RefreshToken{
 		Token:     token,
 		UserId:    userId,

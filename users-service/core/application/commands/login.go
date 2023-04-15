@@ -75,7 +75,7 @@ func (h *LoginHandler) Handle(ctx context.Context, request Login, outputPort por
 
 	refreshToken := types.NewRefreshToken(
 		helpers.GenerateRandomString(80),
-		user.Id.String(),
+		user.Id,
 		time.Now().Add(h.options.RefreshTokenAge),
 	)
 

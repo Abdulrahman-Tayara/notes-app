@@ -71,11 +71,22 @@ func (s *SignUpPresenter) HandleResult(result *entity.User) {
 
 type LoginPresenter struct {
 	BasePresenter[*commands.LoginResult]
-	response Response
 }
 
 func NewLoginPresenter() *LoginPresenter {
 	return &LoginPresenter{
 		BasePresenter: BasePresenter[*commands.LoginResult]{},
+	}
+}
+
+// ---------
+
+type RefreshAccessTokenPresenter struct {
+	BasePresenter[*commands.RefreshAccessTokenResult]
+}
+
+func NewRefreshAccessTokenPresenter() *RefreshAccessTokenPresenter {
+	return &RefreshAccessTokenPresenter{
+		BasePresenter: BasePresenter[*commands.RefreshAccessTokenResult]{},
 	}
 }

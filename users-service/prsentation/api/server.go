@@ -57,4 +57,6 @@ func (s *HTTPServer) setupRouters() {
 
 	apiGroup.POST("/signup", context.GinWrapper(controllers.SignUpController))
 	apiGroup.POST("/login", context.GinWrapper(controllers.LoginController))
+
+	apiGroup.POST("/refresh", context.GinWrapper(controllers.RefreshAccessToken))
 }

@@ -20,4 +20,5 @@ var (
 	BadValueException = func(field string) Exception {
 		return NewException(fmt.Sprintf("bad valud for field %s", field), 222)
 	}
+	UnauthorizedException = NewException("unauthorized", 401)
 )
