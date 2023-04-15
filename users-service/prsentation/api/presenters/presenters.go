@@ -90,3 +90,18 @@ func NewRefreshAccessTokenPresenter() *RefreshAccessTokenPresenter {
 		BasePresenter: BasePresenter[*commands.RefreshAccessTokenResult]{},
 	}
 }
+
+// ---------
+
+type LogoutPresenter struct {
+	BasePresenter[bool]
+}
+
+func NewLogoutPresenter() *LogoutPresenter {
+	return &LogoutPresenter{
+		BasePresenter: BasePresenter[bool]{},
+	}
+}
+func (p *LogoutPresenter) HandleResult(res bool) {
+	p.response = NewSuccessResponse(map[string]bool{"success": res})
+}

@@ -26,6 +26,13 @@ Content-Type: {{content_type}}
   "refresh_token": "8bc732f9a812e066c4d9a3aba1969112d4d65068d10af11ade608441b82b63a4c84d17e224684c49"
 }
 
+### Logout
+POST {{api_url}}/logout
+Content-Type: {{content_type}}
+
+{
+  "refresh_token": "8bc732f9a812e066c4d9a3aba1969112d4d65068d10af11ade608441b82b63a4c84d17e224684c49"
+}
 
 #### Failed test: check response status is 200
 #GET https://httpbin.org/status/404

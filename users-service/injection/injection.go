@@ -36,6 +36,10 @@ func InitRefreshAccessTokenCommand() *commands.RefreshAccessTokenHandler {
 	)
 }
 
+func InitLogoutCommand() *commands.LogoutHandler {
+	return commands.NewLogoutHandler(InitRefreshTokenRepository())
+}
+
 func InitAuthOptions() auth.AuthOptions {
 	return auth.AuthOptions{
 		AccessTokenAge:  time.Minute * time.Duration(configs.AppConfig.JWTAccessTokenAgeMinutes),
