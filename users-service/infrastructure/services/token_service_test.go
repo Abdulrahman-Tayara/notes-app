@@ -2,7 +2,7 @@ package services
 
 import (
 	"errors"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"reflect"
 	"testing"
 	"time"
@@ -10,11 +10,11 @@ import (
 
 func TestJWTService_Generate(t *testing.T) {
 	tests := map[string]struct {
-		input     *services.GenerateInput
+		input     *interfaces.GenerateInput
 		returnErr bool
 	}{
 		"Filled payload": {
-			input: &services.GenerateInput{
+			input: &interfaces.GenerateInput{
 				Payload:   map[string]any{},
 				ExpiresIn: time.Now().Add(time.Hour),
 			},
@@ -44,24 +44,24 @@ func TestJWTService_Generate(t *testing.T) {
 
 func TestJWTService_Parse(t *testing.T) {
 	tests := map[string]struct {
-		tokenGenerator func(svc *JWTService) services.Token
-		outputPayload  services.Payload
+		tokenGenerator func(svc *JWTService) interfaces.Token
+		outputPayload  interfaces.Payload
 		outputErr      error
 	}{
 		"Valid token": {
-			tokenGenerator: func(svc *JWTService) services.Token {
-				token, _ := svc.Generate(&services.GenerateInput{
-					Payload:   services.Payload{"key1": "value1", "key2": true},
+			tokenGenerator: func(svc *JWTService) interfaces.Token {
+				token, _ := svc.Generate(&interfaces.GenerateInput{
+					Payload:   interfaces.Payload{"key1": "value1", "key2": true},
 					ExpiresIn: time.Now().Add(time.Hour),
 				})
 
 				return token
-			}, outputPayload: services.Payload{"key1": "value1", "key2": true}, outputErr: nil,
+			}, outputPayload: interfaces.Payload{"key1": "value1", "key2": true}, outputErr: nil,
 		},
 		"Invalid token": {
-			tokenGenerator: func(svc *JWTService) services.Token {
+			tokenGenerator: func(svc *JWTService) interfaces.Token {
 				return "random_string"
-			}, outputPayload: services.Payload{"key1": "value1", "key2": true}, outputErr: errors.New("invalid token"),
+			}, outputPayload: interfaces.Payload{"key1": "value1", "key2": true}, outputErr: errors.New("invalid token"),
 		},
 	}
 

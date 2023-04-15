@@ -2,10 +2,9 @@ package injection
 
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/repositories"
@@ -37,8 +36,8 @@ func InitRefreshAccessTokenCommand() *commands.RefreshAccessTokenHandler {
 	)
 }
 
-func InitAuthOptions() types.AuthOptions {
-	return types.AuthOptions{
+func InitAuthOptions() auth.AuthOptions {
+	return auth.AuthOptions{
 		AccessTokenAge:  time.Minute * time.Duration(configs.AppConfig.JWTAccessTokenAgeMinutes),
 		RefreshTokenAge: time.Minute * time.Duration(configs.AppConfig.JWTRefreshTokenAgeMinutes),
 	}
@@ -52,7 +51,7 @@ func InitRefreshTokenRepository() interfaces.IRefreshTokenRepository {
 	return repositories.NewRefreshTokenRepository(InitPostgresDBInstance())
 }
 
-func InitTokenService() services.ITokenService {
+func InitTokenService() interfaces.ITokenService {
 	return services2.NewJWTService(services2.Config{
 		SigningKey: configs.AppConfig.JWTKey,
 		Issuer:     configs.AppConfig.JWTIssuer,
@@ -63,7 +62,7 @@ func InitUnitOfWork() interfaces.IUnitOfWork {
 	return infrastructure.NewAppUnitOfWork(InitPostgresDBInstance())
 }
 
-func InitHashService() services.IHashService {
+func InitHashService() interfaces.IHashService {
 	return services2.NewMD5HashService()
 }
 

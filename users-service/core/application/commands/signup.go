@@ -4,7 +4,6 @@ import (
 	"context"
 	interfaces2 "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 )
@@ -17,10 +16,10 @@ type SignUp struct {
 
 type SingUpHandler struct {
 	unitOfWork  interfaces2.IUnitOfWork
-	hashService services.IHashService
+	hashService interfaces2.IHashService
 }
 
-func NewSingUpHandler(unitOfWork interfaces2.IUnitOfWork, hashService services.IHashService) *SingUpHandler {
+func NewSingUpHandler(unitOfWork interfaces2.IUnitOfWork, hashService interfaces2.IHashService) *SingUpHandler {
 	return &SingUpHandler{
 		unitOfWork:  unitOfWork,
 		hashService: hashService,

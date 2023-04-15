@@ -3,8 +3,8 @@ package repositories
 import (
 	"errors"
 	errors2 "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
 	"gorm.io/gorm"
 )
 
@@ -16,16 +16,16 @@ func NewRefreshTokenRepository(db *gorm.DB) interfaces.IRefreshTokenRepository {
 	return &RefreshTokenRepository{db: db}
 }
 
-func (r RefreshTokenRepository) Save(token *types.RefreshToken) (err error) {
+func (r RefreshTokenRepository) Save(token *auth.RefreshToken) (err error) {
 	err = r.db.Save(token).Error
 
 	return
 }
 
-func (r RefreshTokenRepository) GetByToken(token string) (*types.RefreshToken, error) {
-	where := types.RefreshToken{Token: token}
+func (r RefreshTokenRepository) GetByToken(token string) (*auth.RefreshToken, error) {
+	where := auth.RefreshToken{Token: token}
 
-	var model types.RefreshToken
+	var model auth.RefreshToken
 
 	res := r.db.Where(where).First(&model)
 
@@ -39,7 +39,7 @@ func (r RefreshTokenRepository) GetByToken(token string) (*types.RefreshToken, e
 	return &model, nil
 }
 
-func (r RefreshTokenRepository) Delete(token *types.RefreshToken) (err error) {
+func (r RefreshTokenRepository) Delete(token *auth.RefreshToken) (err error) {
 	err = r.db.Delete(token).Error
 	return
 }

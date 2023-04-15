@@ -3,7 +3,8 @@
 package interfaces
 
 import (
-	types "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
+	auth "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
+
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,11 +14,11 @@ type IRefreshTokenRepository struct {
 }
 
 // Delete provides a mock function with given fields: token
-func (_m *IRefreshTokenRepository) Delete(token *types.RefreshToken) error {
+func (_m *IRefreshTokenRepository) Delete(token *auth.RefreshToken) error {
 	ret := _m.Called(token)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*types.RefreshToken) error); ok {
+	if rf, ok := ret.Get(0).(func(*auth.RefreshToken) error); ok {
 		r0 = rf(token)
 	} else {
 		r0 = ret.Error(0)
@@ -27,15 +28,15 @@ func (_m *IRefreshTokenRepository) Delete(token *types.RefreshToken) error {
 }
 
 // GetByToken provides a mock function with given fields: token
-func (_m *IRefreshTokenRepository) GetByToken(token string) (*types.RefreshToken, error) {
+func (_m *IRefreshTokenRepository) GetByToken(token string) (*auth.RefreshToken, error) {
 	ret := _m.Called(token)
 
-	var r0 *types.RefreshToken
-	if rf, ok := ret.Get(0).(func(string) *types.RefreshToken); ok {
+	var r0 *auth.RefreshToken
+	if rf, ok := ret.Get(0).(func(string) *auth.RefreshToken); ok {
 		r0 = rf(token)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*types.RefreshToken)
+			r0 = ret.Get(0).(*auth.RefreshToken)
 		}
 	}
 
@@ -50,11 +51,11 @@ func (_m *IRefreshTokenRepository) GetByToken(token string) (*types.RefreshToken
 }
 
 // Save provides a mock function with given fields: token
-func (_m *IRefreshTokenRepository) Save(token *types.RefreshToken) error {
+func (_m *IRefreshTokenRepository) Save(token *auth.RefreshToken) error {
 	ret := _m.Called(token)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*types.RefreshToken) error); ok {
+	if rf, ok := ret.Get(0).(func(*auth.RefreshToken) error); ok {
 		r0 = rf(token)
 	} else {
 		r0 = ret.Error(0)

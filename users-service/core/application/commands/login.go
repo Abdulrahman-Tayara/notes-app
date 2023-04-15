@@ -5,10 +5,9 @@ import (
 	"errors"
 	errors2 "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
 	"github.com/Abdulrahman-Tayara/notes-app/shared/helpers"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"time"
@@ -20,24 +19,24 @@ type Login struct {
 }
 
 type LoginResult struct {
-	AccessToken  services.Token `json:"access_token"`
-	RefreshToken services.Token `json:"refresh_token"`
+	AccessToken  interfaces.Token `json:"access_token"`
+	RefreshToken interfaces.Token `json:"refresh_token"`
 }
 
 type LoginHandler struct {
-	options                types.AuthOptions
+	options                auth.AuthOptions
 	userRepository         interfaces.IUserReadRepository
 	refreshTokenRepository interfaces.IRefreshTokenRepository
-	tokenService           services.ITokenService
-	hashService            services.IHashService
+	tokenService           interfaces.ITokenService
+	hashService            interfaces.IHashService
 }
 
 func NewLoginHandler(
-	options types.AuthOptions,
+	options auth.AuthOptions,
 	userRepository interfaces.IUserReadRepository,
 	refreshTokenRepository interfaces.IRefreshTokenRepository,
-	tokenService services.ITokenService,
-	hashService services.IHashService,
+	tokenService interfaces.ITokenService,
+	hashService interfaces.IHashService,
 ) *LoginHandler {
 	return &LoginHandler{
 		options:                options,
@@ -53,15 +52,15 @@ func (h *LoginHandler) Handle(ctx context.Context, request Login, outputPort por
 	user, err := h.userRepository.GetOne(&entity.User{Email: domain.Email(request.Email), Password: password})
 
 	if err != nil && errors.Is(errors2.ErrEntityNotFound, err) {
-		outputPort.HandleError(types.InvalidCredentialsException)
+		outputPort.HandleError(domain.InvalidCredentialsException)
 		return
 	} else if err != nil {
 		outputPort.HandleError(err)
 		return
 	}
 
-	accessToken, err := h.tokenService.Generate(&services.GenerateInput{
-		Payload: types.UserClaimsPayload{
+	accessToken, err := h.tokenService.Generate(&interfaces.GenerateInput{
+		Payload: auth.UserClaimsPayload{
 			UserId: user.Id.String(),
 			Email:  string(user.Email),
 		}.AsPayload(),
@@ -73,7 +72,7 @@ func (h *LoginHandler) Handle(ctx context.Context, request Login, outputPort por
 		return
 	}
 
-	refreshToken := types.NewRefreshToken(
+	refreshToken := auth.NewRefreshToken(
 		helpers.GenerateRandomString(80),
 		user.Id,
 		time.Now().Add(h.options.RefreshTokenAge),
@@ -87,6 +86,6 @@ func (h *LoginHandler) Handle(ctx context.Context, request Login, outputPort por
 
 	outputPort.HandleResult(&LoginResult{
 		AccessToken:  accessToken,
-		RefreshToken: services.Token(refreshToken.Token),
+		RefreshToken: interfaces.Token(refreshToken.Token),
 	})
 }

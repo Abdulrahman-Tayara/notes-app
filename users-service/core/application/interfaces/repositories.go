@@ -2,7 +2,7 @@ package interfaces
 
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/shared/interfaces"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 )
 
@@ -20,8 +20,8 @@ type (
 	}
 
 	IRefreshTokenRepository interface {
-		Save(token *types.RefreshToken) error
-		GetByToken(token string) (*types.RefreshToken, error)
-		Delete(token *types.RefreshToken) error
+		Save(token *auth.RefreshToken) error
+		GetByToken(token string) (*auth.RefreshToken, error)
+		Delete(token *auth.RefreshToken) error
 	}
 )

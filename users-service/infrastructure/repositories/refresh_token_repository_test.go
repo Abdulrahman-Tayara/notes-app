@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
 	"reflect"
 	"testing"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestRefreshTokenRepository_Save(t *testing.T) {
-	token := types.NewRefreshToken("some-string", "user-id", time.Now().Add(time.Hour))
+	token := auth.NewRefreshToken("some-string", "user-id", time.Now().Add(time.Hour))
 
 	repo := NewRefreshTokenRepository(db.Instance())
 

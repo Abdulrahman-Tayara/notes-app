@@ -1,8 +1,7 @@
-package types
+package auth
 
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/shared/core"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
 	"time"
 )
 
@@ -11,8 +10,8 @@ type UserClaimsPayload struct {
 	Email  string
 }
 
-func (c UserClaimsPayload) AsPayload() services.Payload {
-	return services.Payload{
+func (c UserClaimsPayload) AsPayload() map[string]any {
+	return map[string]any{
 		"user_id": c.UserId,
 		"email":   c.Email,
 	}

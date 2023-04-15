@@ -3,10 +3,9 @@ package commands
 import (
 	"context"
 	"github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/types"
 	"time"
 )
 
@@ -19,14 +18,14 @@ type RefreshAccessTokenResult struct {
 }
 
 type RefreshAccessTokenHandler struct {
-	authOptions      types.AuthOptions
+	authOptions      auth.AuthOptions
 	userRepo         interfaces.IUserReadRepository
 	refreshTokenRepo interfaces.IRefreshTokenRepository
-	tokenService     services.ITokenService
+	tokenService     interfaces.ITokenService
 }
 
-func NewRefreshAccessTokenHandler(authOptions types.AuthOptions, userRepo interfaces.IUserReadRepository, refreshTokenRepo interfaces.IRefreshTokenRepository,
-	tokenService services.ITokenService) *RefreshAccessTokenHandler {
+func NewRefreshAccessTokenHandler(authOptions auth.AuthOptions, userRepo interfaces.IUserReadRepository, refreshTokenRepo interfaces.IRefreshTokenRepository,
+	tokenService interfaces.ITokenService) *RefreshAccessTokenHandler {
 	return &RefreshAccessTokenHandler{
 		authOptions: authOptions,
 		userRepo:    userRepo, refreshTokenRepo: refreshTokenRepo, tokenService: tokenService}
@@ -56,8 +55,8 @@ func (h *RefreshAccessTokenHandler) Handle(ctx context.Context, request RefreshA
 		panic(err)
 	}
 
-	token, err := h.tokenService.Generate(&services.GenerateInput{
-		Payload: types.UserClaimsPayload{
+	token, err := h.tokenService.Generate(&interfaces.GenerateInput{
+		Payload: auth.UserClaimsPayload{
 			UserId: user.Id.String(),
 			Email:  string(user.Email),
 		}.AsPayload(),

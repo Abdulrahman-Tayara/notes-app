@@ -3,7 +3,7 @@ package services
 import (
 	"errors"
 	"fmt"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/services"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
@@ -23,7 +23,7 @@ func NewJWTService(c Config) *JWTService {
 	}
 }
 
-func (j *JWTService) Generate(input *services.GenerateInput) (services.Token, error) {
+func (j *JWTService) Generate(input *interfaces.GenerateInput) (interfaces.Token, error) {
 	if input == nil {
 		return "", errors.New("input is required")
 	}
@@ -46,10 +46,10 @@ func (j *JWTService) Generate(input *services.GenerateInput) (services.Token, er
 		return "", err
 	}
 
-	return services.Token(tokenString), nil
+	return interfaces.Token(tokenString), nil
 }
 
-func (j *JWTService) Parse(token services.Token) (services.Payload, error) {
+func (j *JWTService) Parse(token interfaces.Token) (interfaces.Payload, error) {
 	jwtoken, err := jwt.Parse(string(token), func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -67,7 +67,7 @@ func (j *JWTService) Parse(token services.Token) (services.Payload, error) {
 			return payload, nil
 		}
 
-		return services.Payload{}, nil
+		return interfaces.Payload{}, nil
 	}
 
 	return nil, errors.New("invalid token")
