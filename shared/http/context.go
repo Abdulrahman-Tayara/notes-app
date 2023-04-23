@@ -1,7 +1,6 @@
-package context
+package http
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/presenters"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -10,7 +9,7 @@ type Context struct {
 	*gin.Context
 }
 
-func (c *Context) Response(r presenters.Response) {
+func (c *Context) Response(r Response) {
 	if r.Err != nil {
 		_ = c.Error(r.Err)
 	}
@@ -19,7 +18,7 @@ func (c *Context) Response(r presenters.Response) {
 
 func (c *Context) BindJsonOrReturnError(obj any) bool {
 	if err := c.ShouldBindJSON(obj); err != nil {
-		c.Response(presenters.NewErrorResponse(err, http.StatusBadRequest))
+		c.Response(NewErrorResponse(err, http.StatusBadRequest))
 		return false
 	}
 

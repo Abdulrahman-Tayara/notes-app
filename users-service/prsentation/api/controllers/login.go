@@ -1,9 +1,9 @@
 package controllers
 
 import (
+	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/context"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/presenters"
 )
 
@@ -12,7 +12,7 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func LoginController(ctx *context.Context) {
+func LoginController(ctx *http.Context) {
 
 	var request LoginRequest
 

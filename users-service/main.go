@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
+	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api"
 	"log"
-	"net/http"
+	nethttp "net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -35,12 +36,15 @@ func main() {
 	config, _ := loadConfig()
 	configs.AppConfig = &config
 
-	server := api.NewHTTPServer(config)
+	server := http.NewHTTPServer(http.Config{
+		Port:    config.Port,
+		GinMode: config.GinMode,
+	})
 
 	go func() {
-		err := server.Run()
+		err := server.Run(api.SetupRouters)
 
-		if err != nil && err != http.ErrServerClosed {
+		if err != nil && err != nethttp.ErrServerClosed {
 			log.Fatalf("error while starting the server: %v", err)
 		}
 	}()

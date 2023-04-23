@@ -2,53 +2,27 @@ package presenters
 
 import (
 	"encoding/json"
+	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/viewmodels"
-	"net/http"
+	nethttp "net/http"
 )
 
-type Response struct {
-	Code int
-	Body map[string]any
-	Err  error
-}
-
-func NewErrorResponse(err error, code int) Response {
-	r := Response{
-		Code: code,
-		Body: map[string]any{},
-		Err:  err,
-	}
-	r.Body["error"] = err.Error()
-	return r
-}
-
-func NewSuccessResponse(data any) Response {
-	r := Response{
-		Code: http.StatusOK,
-		Body: map[string]any{},
-	}
-	r.Body["data"] = data
-	return r
-}
-
-// ---------
-
 type BasePresenter[TResult any] struct {
-	response Response
+	response http.Response
 }
 
 func (p *BasePresenter[TResult]) HandleError(err error) {
-	p.response = NewErrorResponse(err, http.StatusBadRequest)
+	p.response = http.NewErrorResponse(err, nethttp.StatusBadRequest)
 }
 func (p *BasePresenter[TResult]) HandleResult(result TResult) {
 	bytes, _ := json.Marshal(result)
 	var res map[string]any
 	_ = json.Unmarshal(bytes, &res)
-	p.response = NewSuccessResponse(res)
+	p.response = http.NewSuccessResponse(res)
 }
-func (p *BasePresenter[TResult]) Present() Response {
+func (p *BasePresenter[TResult]) Present() http.Response {
 	return p.response
 }
 
@@ -64,7 +38,7 @@ func NewSingUpPresenter() *SignUpPresenter {
 	}
 }
 func (s *SignUpPresenter) HandleResult(result *entity.User) {
-	s.response = NewSuccessResponse(viewmodels.UserToViewModel(result))
+	s.response = http.NewSuccessResponse(viewmodels.UserToViewModel(result))
 }
 
 // ---------
@@ -103,5 +77,5 @@ func NewLogoutPresenter() *LogoutPresenter {
 	}
 }
 func (p *LogoutPresenter) HandleResult(res bool) {
-	p.response = NewSuccessResponse(map[string]bool{"success": res})
+	p.response = http.NewSuccessResponse(map[string]bool{"success": res})
 }

@@ -1,9 +1,9 @@
 package controllers
 
 import (
+	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/context"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/presenters"
 )
 
@@ -13,7 +13,7 @@ type SignUpRequest struct {
 	Password string `json:"password" binding:"required,min=6"`
 }
 
-func SignUpController(ctx *context.Context) {
+func SignUpController(ctx *http.Context) {
 	var request SignUpRequest
 
 	if !ctx.BindJsonOrReturnError(&request) {
