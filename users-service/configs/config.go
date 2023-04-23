@@ -1,9 +1,10 @@
 package configs
 
 type Config struct {
-	DbDSN   string `mapstructure:"DB_DSN"`
-	Port    string `mapstructure:"PORT"`
-	GinMode string `mapstructure:"GIN_MODE"`
+	DbDSN    string `mapstructure:"DB_DSN"`
+	Port     string `mapstructure:"PORT"`
+	GRPCPort string `mapstructure:"GRPC_PORT"`
+	GinMode  string `mapstructure:"GIN_MODE"`
 
 	JWTKey                    string `mapstructure:"JWT_KEY"`
 	JWTIssuer                 string `mapstructure:"JWT_ISSUER"`

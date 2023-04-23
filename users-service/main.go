@@ -2,11 +2,15 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
+	grpc2 "github.com/Abdulrahman-Tayara/notes-app/users-service/grpc"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api"
+	"google.golang.org/grpc"
 	"log"
+	"net"
 	nethttp "net/http"
 	"os"
 	"os/signal"
@@ -32,10 +36,7 @@ func init() {
 	}
 }
 
-func main() {
-	config, _ := loadConfig()
-	configs.AppConfig = &config
-
+func httpServerSetup(config *configs.Config) *http.Server {
 	server := http.NewHTTPServer(http.Config{
 		Port:    config.Port,
 		GinMode: config.GinMode,
@@ -49,8 +50,37 @@ func main() {
 		}
 	}()
 
+	return server
+}
+
+func grpcServerSetup(config *configs.Config) *grpc.Server {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", config.GRPCPort))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+
+	grpc2.RegisterAuthenticationServer(s)
+
+	log.Printf("grpc server listening at %v", lis.Addr())
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
+	return s
+}
+
+func main() {
+	config, _ := loadConfig()
+	configs.AppConfig = &config
+
+	httpServer := httpServerSetup(&config)
+	grpcServer := grpcServerSetup(&config)
+
 	handleCloseSignals(func(ctx context.Context) {
-		if err := server.Close(ctx); err != nil {
+		grpcServer.Stop()
+
+		if err := httpServer.Close(ctx); err != nil {
 			log.Fatal("Server forced to shutdown: ", err)
 		}
 	})

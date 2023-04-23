@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "github.com/Abdulrahman-Tayara/notes-app/proto/authentication";
+option java_multiple_files = true;
+
+package authenticationservice;
+
+service Authentication {
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {}
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  int32 statusCode = 1;
+  string message = 2;
+  TokenClaims claims = 3;
+}
+
+message TokenClaims {
+  string userId = 1;
+  string email = 2;
+}
