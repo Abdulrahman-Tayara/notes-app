@@ -5,7 +5,7 @@ import (
 	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/viewmodels"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/presentation/viewmodels"
 	nethttp "net/http"
 )
 

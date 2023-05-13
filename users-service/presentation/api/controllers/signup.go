@@ -4,7 +4,7 @@ import (
 	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/presenters"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/presentation/api/presenters"
 )
 
 type SignUpRequest struct {

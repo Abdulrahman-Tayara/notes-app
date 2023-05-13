@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/prsentation/api/controllers"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/presentation/api/controllers"
 	"github.com/gin-gonic/gin"
 	nethttp "net/http"
 )
