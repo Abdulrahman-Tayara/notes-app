@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/Abdulrahman-Tayara/notes-app/pkg/http"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/logging"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/api"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	grpc2 "github.com/Abdulrahman-Tayara/notes-app/users-service/grpc"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -70,9 +72,15 @@ func grpcServerSetup(config *configs.Config) *grpc.Server {
 	return s
 }
 
+var logger logging.ILogger
+
 func main() {
 	config, _ := loadConfig()
 	configs.AppConfig = &config
+
+	logger = injection.InitLogger()
+
+	logger.Info("Starting the server...")
 
 	httpServer := httpServerSetup(&config)
 	grpcServer := grpcServerSetup(&config)
@@ -81,7 +89,7 @@ func main() {
 		grpcServer.Stop()
 
 		if err := httpServer.Close(ctx); err != nil {
-			log.Fatal("Server forced to shutdown: ", err)
+			logger.Fatalf("Server forced to shutdown: ", err)
 		}
 	})
 }
@@ -92,12 +100,12 @@ func handleCloseSignals(onClose func(ctx context.Context)) {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	log.Println("Shutting down the application...")
+	logger.Info("Shutting down the application...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	onClose(ctx)
 
-	log.Println("Application exiting")
+	logger.Info("Application exiting")
 }

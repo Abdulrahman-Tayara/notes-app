@@ -1,13 +1,15 @@
 package logging
 
-import "go.uber.org/zap"
+import (
+	"go.uber.org/zap"
+)
 
 type ZapLogger struct {
 	zapLogger *zap.SugaredLogger
 }
 
 func NewDevelopment() ILogger {
-	logger, _ := zap.NewDevelopment()
+	logger, _ := zap.NewDevelopment(zap.AddCallerSkip(1))
 
 	return &ZapLogger{
 		zapLogger: logger.Sugar(),
@@ -15,7 +17,7 @@ func NewDevelopment() ILogger {
 }
 
 func NewProduction() ILogger {
-	logger, _ := zap.NewProduction()
+	logger, _ := zap.NewProduction(zap.AddCallerSkip(1))
 
 	return &ZapLogger{
 		zapLogger: logger.Sugar(),
@@ -23,7 +25,7 @@ func NewProduction() ILogger {
 }
 
 func (z *ZapLogger) Info(message string, args ...any) {
-	z.zapLogger.Infof(message, args)
+	z.zapLogger.Infof(message, args...)
 }
 
 func (z *ZapLogger) Warning(message string, args ...any) {
@@ -31,7 +33,7 @@ func (z *ZapLogger) Warning(message string, args ...any) {
 }
 
 func (z *ZapLogger) Debug(message string, args ...any) {
-	z.zapLogger.Debugf(message, args)
+	z.zapLogger.Debugf(message, args...)
 }
 
 func (z *ZapLogger) Error(err error) {
@@ -39,5 +41,9 @@ func (z *ZapLogger) Error(err error) {
 }
 
 func (z *ZapLogger) Errorf(err string, args ...any) {
-	z.zapLogger.Errorf(err, args)
+	z.zapLogger.Errorf(err, args...)
+}
+
+func (z *ZapLogger) Fatalf(err string, args ...any) {
+	z.zapLogger.Fatalf(err, args...)
 }

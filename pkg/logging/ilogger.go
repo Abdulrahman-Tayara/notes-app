@@ -10,4 +10,6 @@ type ILogger interface {
 	Error(err error)
 
 	Errorf(err string, args ...any)
+
+	Fatalf(err string, args ...any)
 }

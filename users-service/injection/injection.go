@@ -75,10 +75,18 @@ func InitPostgresDBInstance() *gorm.DB {
 	return db.Instance()
 }
 
+var logger logging.ILogger
+
 func InitLogger() logging.ILogger {
-	if configs.AppConfig.AppEnv == "production" {
-		return logging.NewProduction()
-	} else {
-		return logging.NewDevelopment()
+	if logger != nil {
+		return logger
 	}
+
+	if configs.AppConfig.AppEnv == "production" {
+		logger = logging.NewProduction()
+	} else {
+		logger = logging.NewDevelopment()
+	}
+
+	return logger
 }
