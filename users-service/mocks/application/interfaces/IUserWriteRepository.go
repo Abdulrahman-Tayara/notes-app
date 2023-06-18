@@ -3,7 +3,7 @@
 package interfaces
 
 import (
-	core "github.com/Abdulrahman-Tayara/notes-app/shared/core"
+	core "github.com/Abdulrahman-Tayara/notes-app/pkg/core"
 	entity "github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 
 	mock "github.com/stretchr/testify/mock"

@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/Abdulrahman-Tayara/notes-app/proto/authentication v0.0.0-unpublished
-	github.com/Abdulrahman-Tayara/notes-app/shared v0.0.0-unpublished
+	github.com/Abdulrahman-Tayara/notes-app/pkg v0.0.0-unpublished
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/golang-jwt/jwt/v5 v5.0.0-rc.1
@@ -62,6 +62,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Abdulrahman-Tayara/notes-app/shared v0.0.0-unpublished => ../shared
+replace github.com/Abdulrahman-Tayara/notes-app/pkg v0.0.0-unpublished => ../pkg
 
 replace github.com/Abdulrahman-Tayara/notes-app/proto/authentication v0.0.0-unpublished => ../proto/authentication

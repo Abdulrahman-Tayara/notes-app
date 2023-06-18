@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"errors"
-	errors2 "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	errors2 "github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"gorm.io/gorm"

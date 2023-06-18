@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
 	"github.com/go-playground/validator/v10"
 )
 

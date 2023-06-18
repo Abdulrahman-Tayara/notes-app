@@ -1,6 +1,6 @@
-package interfaces
+package persistence
 
-import "github.com/Abdulrahman-Tayara/notes-app/shared/core"
+import "github.com/Abdulrahman-Tayara/notes-app/pkg/core"
 
 type (
 	IReadRepository[TEntity core.Entity, TFilters any] interface {

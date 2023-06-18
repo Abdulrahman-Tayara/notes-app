@@ -3,8 +3,8 @@ package commands
 import (
 	"context"
 	"errors"
-	errors2 "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/helpers"
+	errors2 "github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/helpers"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"

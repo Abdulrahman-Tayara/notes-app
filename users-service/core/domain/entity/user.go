@@ -4,7 +4,7 @@ import (
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"time"
 
-	"github.com/Abdulrahman-Tayara/notes-app/shared/core"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/core"
 )
 
 type User struct {

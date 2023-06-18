@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/presentation/api/controllers"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/http"
+	controllers2 "github.com/Abdulrahman-Tayara/notes-app/users-service/api/controllers"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	nethttp "net/http"
@@ -21,9 +21,9 @@ func SetupRouters(engine *gin.Engine) {
 		})
 	})
 
-	apiGroup.POST("/signup", http.GinWrapper(controllers.SignUpController))
-	apiGroup.POST("/login", http.GinWrapper(controllers.LoginController))
+	apiGroup.POST("/signup", http.GinWrapper(controllers2.SignUpController))
+	apiGroup.POST("/login", http.GinWrapper(controllers2.LoginController))
 
-	apiGroup.POST("/refresh", http.GinWrapper(controllers.RefreshAccessToken))
-	apiGroup.POST("/logout", http.GinWrapper(controllers.Logout))
+	apiGroup.POST("/refresh", http.GinWrapper(controllers2.RefreshAccessToken))
+	apiGroup.POST("/logout", http.GinWrapper(controllers2.Logout))
 }

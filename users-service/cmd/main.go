@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/http"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/api"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	grpc2 "github.com/Abdulrahman-Tayara/notes-app/users-service/grpc"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/presentation/api"
 	"google.golang.org/grpc"
 	"log"
 	"net"

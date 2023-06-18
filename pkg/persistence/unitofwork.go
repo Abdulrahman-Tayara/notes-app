@@ -1,4 +1,4 @@
-package interfaces
+package persistence
 
 type IUnitOfWork[TStore any] interface {
 	Begin() error

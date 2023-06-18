@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/core"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/core"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"errors"
-	sharederrors "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	sharederrors "github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"

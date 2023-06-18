@@ -2,22 +2,22 @@ package postgres
 
 import (
 	"errors"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/interfaces"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/persistence"
 	"gorm.io/gorm"
 )
 
-type StorFactory[TStore any] interface {
+type StoreFactory[TStore any] interface {
 	Create(db *gorm.DB) TStore
 }
 
 type UnitOfWork[TStore any] struct {
 	db           *gorm.DB
-	storeFactory StorFactory[TStore]
+	storeFactory StoreFactory[TStore]
 
 	openedTransaction *gorm.DB
 }
 
-func NewPostgresUnitOfWork[TStore any](db *gorm.DB, factory StorFactory[TStore]) interfaces.IUnitOfWork[TStore] {
+func NewPostgresUnitOfWork[TStore any](db *gorm.DB, factory StoreFactory[TStore]) persistence.IUnitOfWork[TStore] {
 	return &UnitOfWork[TStore]{
 		db:           db,
 		storeFactory: factory,

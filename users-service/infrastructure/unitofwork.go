@@ -1,7 +1,7 @@
 package infrastructure
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/infrastructure/postgres"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/persistence/postgres"
 	interfaces2 "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/repositories"
 	"gorm.io/gorm"

@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/infrastructure/postgres"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/persistence/postgres"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"gorm.io/gorm"

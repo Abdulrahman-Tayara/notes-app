@@ -3,7 +3,7 @@ package commands
 import (
 	"context"
 	goerrors "errors"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
 	interfaces2 "github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/ports"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"

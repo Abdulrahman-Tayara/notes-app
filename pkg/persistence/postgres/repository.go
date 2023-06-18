@@ -2,8 +2,8 @@ package postgres
 
 import (
 	"errors"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/core"
-	sharederrors "github.com/Abdulrahman-Tayara/notes-app/shared/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/core"
+	sharederrors "github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
 	"gorm.io/gorm"
 )
 

@@ -2,10 +2,10 @@ package presenters
 
 import (
 	"encoding/json"
-	"github.com/Abdulrahman-Tayara/notes-app/shared/http"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/http"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/api/viewmodels"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/presentation/viewmodels"
 	nethttp "net/http"
 )
 

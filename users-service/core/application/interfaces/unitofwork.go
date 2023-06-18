@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/interfaces"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/persistence"
 )
 
 type IRepositoriesConstructor interface {
@@ -10,5 +10,5 @@ type IRepositoriesConstructor interface {
 }
 
 type IUnitOfWork interface {
-	interfaces.IUnitOfWork[IRepositoriesConstructor]
+	persistence.IUnitOfWork[IRepositoriesConstructor]
 }

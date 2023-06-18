@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"github.com/Abdulrahman-Tayara/notes-app/shared/interfaces"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/persistence"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 )
@@ -12,11 +12,11 @@ type (
 	}
 
 	IUserReadRepository interface {
-		interfaces.IReadRepository[entity.User, UsersFilter]
+		persistence.IReadRepository[entity.User, UsersFilter]
 	}
 
 	IUserWriteRepository interface {
-		interfaces.IWriteRepository[entity.User]
+		persistence.IWriteRepository[entity.User]
 	}
 
 	IRefreshTokenRepository interface {
