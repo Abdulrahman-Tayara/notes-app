@@ -1,6 +1,7 @@
 package configs
 
 type Config struct {
+	AppEnv   string `mapstructure:"APP_ENV"`
 	DbDSN    string `mapstructure:"DB_DSN"`
 	Port     string `mapstructure:"PORT"`
 	GRPCPort string `mapstructure:"GRPC_PORT"`

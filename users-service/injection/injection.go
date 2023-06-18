@@ -1,6 +1,7 @@
 package injection
 
 import (
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/logging"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
@@ -72,4 +73,12 @@ func InitHashService() interfaces.IHashService {
 
 func InitPostgresDBInstance() *gorm.DB {
 	return db.Instance()
+}
+
+func InitLogger() logging.ILogger {
+	if configs.AppConfig.AppEnv == "production" {
+		return logging.NewProduction()
+	} else {
+		return logging.NewDevelopment()
+	}
 }
