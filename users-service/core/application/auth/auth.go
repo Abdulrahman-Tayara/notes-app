@@ -10,6 +10,19 @@ type UserClaimsPayload struct {
 	Email  string
 }
 
+func NewUserClaimsPayload(m map[string]any) (res *UserClaimsPayload) {
+	defer func() {
+		if err := recover(); err != nil {
+			res = nil
+		}
+	}()
+
+	return &UserClaimsPayload{
+		UserId: m["user_id"].(string),
+		Email:  m["email"].(string),
+	}
+}
+
 func (c UserClaimsPayload) AsPayload() map[string]any {
 	return map[string]any{
 		"user_id": c.UserId,

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/Abdulrahman-Tayara/notes-app/pkg/http"
 	"github.com/Abdulrahman-Tayara/notes-app/pkg/logging"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/api"
+	grpc2 "github.com/Abdulrahman-Tayara/notes-app/users-service/api/grpc"
+	http2 "github.com/Abdulrahman-Tayara/notes-app/users-service/api/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
-	grpc2 "github.com/Abdulrahman-Tayara/notes-app/users-service/grpc"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
 	"google.golang.org/grpc"
@@ -45,7 +45,7 @@ func httpServerSetup(config *configs.Config) *http.Server {
 	})
 
 	go func() {
-		err := server.Run(api.SetupRouters)
+		err := server.Run(http2.SetupRouters)
 
 		if err != nil && err != nethttp.ErrServerClosed {
 			log.Fatalf("error while starting the server: %v", err)

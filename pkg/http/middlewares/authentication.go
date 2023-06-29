@@ -41,7 +41,10 @@ func Authentication(config *AuthenticationConfig) (gin.HandlerFunc, error) {
 			return
 		}
 
-		response, err := client.ValidateToken(context.TODO(), &pb.ValidateTokenRequest{})
+		response, err := client.ValidateToken(context.TODO(), &pb.ValidateTokenRequest{
+			Token: token,
+		})
+
 		if err != nil {
 			return
 		}

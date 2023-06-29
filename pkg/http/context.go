@@ -9,6 +9,13 @@ type Context struct {
 	*gin.Context
 }
 
+type AuthorizedContext struct {
+	*Context
+
+	UserId string
+	Email  string
+}
+
 func (c *Context) Response(r Response) {
 	if r.Err != nil {
 		_ = c.Error(r.Err)
@@ -27,7 +34,19 @@ func (c *Context) BindJsonOrReturnError(obj any) bool {
 
 func GinWrapper(handler func(ctx *Context)) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
-		c := Context{Context: ctx}
+		context := Context{Context: ctx}
+		handler(&context)
+	}
+}
+
+func GinAuthorizedWrapper(handler func(ctx *AuthorizedContext)) func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		c := AuthorizedContext{
+			Context: &Context{Context: ctx},
+			UserId:  ctx.GetString("user_id"),
+			Email:   ctx.GetString("email"),
+		}
+
 		handler(&c)
 	}
 }

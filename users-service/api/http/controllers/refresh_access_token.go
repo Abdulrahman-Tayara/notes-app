@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/pkg/http"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/api/presenters"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/api/http/presenters"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/commands"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
 )
