@@ -3,11 +3,11 @@ package repositories
 import (
 	"errors"
 	sharederrors "github.com/Abdulrahman-Tayara/notes-app/pkg/errors"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/interfaces"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
@@ -16,13 +16,13 @@ import (
 func init() {
 	log.Println("init")
 
-	config, err := initializers.LoadTestConfig("../../")
+	config, err := configs.LoadTestConfig("../../")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = initializers.ConnectToDB(&config)
+	err = db.ConnectToDB(config.DbDSN)
 
 	if err != nil {
 		log.Fatal(err)

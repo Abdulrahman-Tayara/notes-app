@@ -8,7 +8,7 @@ import (
 	grpc2 "github.com/Abdulrahman-Tayara/notes-app/users-service/api/grpc"
 	http2 "github.com/Abdulrahman-Tayara/notes-app/users-service/api/http"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/injection"
 	"google.golang.org/grpc"
 	"log"
@@ -21,7 +21,7 @@ import (
 )
 
 func loadConfig() (configs.Config, error) {
-	return initializers.LoadConfig(".", "app")
+	return configs.LoadConfig(".", "app")
 }
 
 func init() {
@@ -31,7 +31,7 @@ func init() {
 		log.Fatal("error while loading the config: ", err)
 	}
 
-	err = initializers.ConnectToDB(&config)
+	err = db.ConnectToDB(config.DbDSN)
 
 	if err != nil {
 		log.Fatal("error while connecting to the database: ", err)

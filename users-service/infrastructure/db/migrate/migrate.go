@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/Abdulrahman-Tayara/notes-app/users-service/configs"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/application/auth"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/core/domain/entity"
 	"github.com/Abdulrahman-Tayara/notes-app/users-service/infrastructure/db"
-	"github.com/Abdulrahman-Tayara/notes-app/users-service/initializers"
 	"log"
 )
 
 func init() {
-	config, err := initializers.LoadConfig(".", "app")
+	config, err := configs.LoadConfig(".", "app")
 
 	if err != nil {
 		log.Fatal("error while loading the config", err)
 	}
 
-	err = initializers.ConnectToDB(&config)
+	err = db.ConnectToDB(config.DbDSN)
 
 	if err != nil {
 		log.Fatal("error while connecting to the database", err)
