@@ -21,4 +21,6 @@ var (
 		return NewException(fmt.Sprintf("bad valud for field %s", field), 222)
 	}
 	UnauthorizedException = NewException("unauthorized", 401)
+
+	ForbiddenExecption = NewException("forbidden", 403)
 )

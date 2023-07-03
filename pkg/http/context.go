@@ -1,6 +1,8 @@
 package http
 
 import (
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/context"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/core"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -9,11 +11,15 @@ type Context struct {
 	*gin.Context
 }
 
-type AuthorizedContext struct {
-	*Context
-
-	UserId string
-	Email  string
+func (c *Context) AppContext() *context.AppContext {
+	return &context.AppContext{
+		Context: c,
+		UserId: func() core.ID {
+			id, _ := core.ParseSafely(c.GetString("user_id"))
+			return id
+		}(),
+		Email: c.GetString("email"),
+	}
 }
 
 func (c *Context) Response(r Response) {
@@ -36,17 +42,5 @@ func GinWrapper(handler func(ctx *Context)) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		context := Context{Context: ctx}
 		handler(&context)
-	}
-}
-
-func GinAuthorizedWrapper(handler func(ctx *AuthorizedContext)) func(ctx *gin.Context) {
-	return func(ctx *gin.Context) {
-		c := AuthorizedContext{
-			Context: &Context{Context: ctx},
-			UserId:  ctx.GetString("user_id"),
-			Email:   ctx.GetString("email"),
-		}
-
-		handler(&c)
 	}
 }
