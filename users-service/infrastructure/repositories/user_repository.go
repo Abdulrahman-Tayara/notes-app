@@ -21,6 +21,6 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	}
 }
 
-func filtersAsMap(filters interfaces.UsersFilter) any {
-	return map[string]interface{}{"email": filters.Email}
+func filtersAsMap(filters interfaces.UsersFilter) postgres.Specification {
+	return postgres.Equal("email", filters.Email)
 }

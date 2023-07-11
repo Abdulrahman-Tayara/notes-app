@@ -2,12 +2,13 @@ package interfaces
 
 import (
 	"github.com/Abdulrahman-Tayara/notes-app/notes-service/domain"
+	"github.com/Abdulrahman-Tayara/notes-app/pkg/core"
 	"github.com/Abdulrahman-Tayara/notes-app/pkg/persistence"
 )
 
 type (
 	NoteSpecification struct {
-		UserId string
+		UserId core.ID
 		Title  string
 	}
 

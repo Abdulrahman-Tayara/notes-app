@@ -16,7 +16,24 @@ type NoteRepository struct {
 func NewNoteRepository(db *gorm.DB) *NoteRepository {
 	return &NoteRepository{
 		db:              db,
-		ReadRepository:  postgres.NewPostgresReadRepository[domain.Note, interfaces.NoteSpecification](db, nil),
+		ReadRepository:  postgres.NewPostgresReadRepository[domain.Note, interfaces.NoteSpecification](db, specificationMapper),
 		WriteRepository: postgres.NewPostgresWriteRepository[domain.Note](db),
 	}
+}
+
+func specificationMapper(s interfaces.NoteSpecification) postgres.Specification {
+	return postgres.And(
+		func() postgres.Specification {
+			if s.UserId != "" {
+				return postgres.Equal("user_id", s.UserId)
+			}
+			return nil
+		}(),
+		func() postgres.Specification {
+			if s.Title != "" {
+				return postgres.Like("title", s.Title)
+			}
+			return nil
+		}(),
+	)
 }

@@ -31,7 +31,7 @@ func (h *UpdateNoteHandler) Handle(ctx *context.AppContext, request *UpdateNote)
 		return nil, err
 	}
 
-	if err = h.authorize(note, ctx); err != nil {
+	if err = h.authorize(ctx, note); err != nil {
 		return nil, err
 	}
 
@@ -65,7 +65,7 @@ func (h *UpdateNoteHandler) Handle(ctx *context.AppContext, request *UpdateNote)
 	return note, nil
 }
 
-func (h *UpdateNoteHandler) authorize(note *domain.Note, ctx *context.AppContext) error {
+func (h *UpdateNoteHandler) authorize(ctx *context.AppContext, note *domain.Note) error {
 	if ctx.UserId != note.UserId {
 		return errors.ForbiddenExecption
 	}

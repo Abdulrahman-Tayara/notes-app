@@ -10,10 +10,10 @@ import (
 type ReadRepository[TEntity core.Entity, TFilters any] struct {
 	db *gorm.DB
 
-	filtersMapper func(TFilters) any
+	filtersMapper func(TFilters) Specification
 }
 
-func NewPostgresReadRepository[TEntity core.Entity, TFilters any](db *gorm.DB, filtersMapper func(TFilters) any) *ReadRepository[TEntity, TFilters] {
+func NewPostgresReadRepository[TEntity core.Entity, TFilters any](db *gorm.DB, filtersMapper func(TFilters) Specification) *ReadRepository[TEntity, TFilters] {
 	return &ReadRepository[TEntity, TFilters]{
 		db:            db,
 		filtersMapper: filtersMapper,
@@ -50,7 +50,7 @@ func (r ReadRepository[TEntity, TFilters]) GetAll(filters TFilters) (entities []
 
 	var models []TEntity
 
-	res := r.db.Model(&model).Where(filter).Find(&models)
+	res := r.db.Model(&model).Where(filter.GetQuery(), filter.GetValues()).Find(&models)
 
 	err = normalizeGORMErrors(res.Error)
 
@@ -70,7 +70,7 @@ func (r ReadRepository[TEntity, TFilters]) Count(filters TFilters) int32 {
 
 	count := int64(0)
 
-	_ = r.db.Model(&model).Where(filter).Count(&count)
+	_ = r.db.Model(&model).Where(filter.GetQuery(), filter.GetValues()).Count(&count)
 
 	return int32(count)
 }

@@ -15,6 +15,8 @@ type Note struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type Notes []Note
+
 func NewNote(userId core.ID, title string, content string) (*Note, error) {
 	if userId == "" {
 		return nil, errors.New("invalid user id")
